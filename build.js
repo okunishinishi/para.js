@@ -42,31 +42,49 @@ function allContentsInDir(dirpath, callback) {
 jobQueue
     .push(function (next) {
         var publish = require('tek-html')['publish'];
-        publish('tek.js', libDir, next);
+
+        var files = 'tek.js,tek.less'.split(','),
+            jobs = files.map(function (filename) {
+                return function (next) {
+                    publish(filename, libDir, next);
+                }
+            });
+
+        new JobQueue().pushAll(jobs).execute(next);
     })
     .push(function (next) {
         var copy = file['copy'],
+            getExtension = file['getExtension'],
             EOL = require('os')['EOL'];
 
         fs.readdir(libDir, function (err, filenames) {
             err && handleErr(err);
-            var jobs = filenames.map(function (filename) {
-                var filepath = resolve(libDir, filename);
-                if (isDir(filepath)) {
-                    return function (next) {
-                        allContentsInDir(filepath, function (contents) {
-                            fs.writeFile(resolve(distDir, filename), contents.join(EOL), function (err) {
-                                err && handleErr(err);
-                                next();
-                            });
-                        });
+            var jobs = filenames
+                .filter(function (filename) {
+                    var ignores = [/\.less$/, /^tek\.css$/];
+                    for (var i = 0, len = ignores.length; i < len; i++) {
+                        var hit = filename.match(ignores[i]);
+                        if (hit) return false;
                     }
-                } else {
-                    return function (next) {
-                        copy(filepath, resolve(distDir, filename), next);
-                    };
-                }
-            });
+                    return true;
+                })
+                .map(function (filename) {
+                    var filepath = resolve(libDir, filename);
+                    if (isDir(filepath)) {
+                        return function (next) {
+                            allContentsInDir(filepath, function (contents) {
+                                fs.writeFile(resolve(distDir, filename), contents.join(EOL), function (err) {
+                                    err && handleErr(err);
+                                    next();
+                                });
+                            });
+                        }
+                    } else {
+                        return function (next) {
+                            copy(filepath, resolve(distDir, filename), next);
+                        };
+                    }
+                });
             new JobQueue().pushAll(jobs).execute(next);
         });
     })
