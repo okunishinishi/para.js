@@ -1,0 +1,16 @@
+{
+    "name": "para.js",
+    "version": "0.0.1",
+    "author": {
+        "name": "Taka Okunishi"
+    },
+    "devDependencies": {
+        "should": "*",
+        "nodeunit": "*"
+    },
+    "dependencies": {
+        "tek": "*",
+        "tek-html": "*",
+        "commander": "*"
+    }
+}
