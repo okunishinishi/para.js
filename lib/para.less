@@ -1,20 +1,30 @@
 @import "tek.less";
 
+html{
+  margin: 0;
+  padding: 0;
+}
 body {
   background: #FAFAFA;
   color: #555;
   text-align: center;
   margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
 }
-.pr-stage{
+
+.pr-stage {
   position: fixed;
   left: 0;
-  top:0;
-  width:100%;
+  top: 0;
+  width: 100%;
   height: 100%;
 }
+
 .pr-page {
   .box-sizing(border-box);
+  overflow: hidden;
   width: 100%;
   min-height: 300px;
 }
