@@ -156,6 +156,21 @@ para = (function (Kinetic, tek, para) {
     return para;
 })(Kinetic, tek, window['para'] || {});
 para = (function (Kinetic, tek, para, window, document) {
+    var Animation = tek.Animation;
+
+    window = tek.crossBrowser(window);
+    window.
+        window.scrollToAnimation = function (x, y, duration) {
+        new Animation({
+            x: window.scrollX,
+            y: window.scrollY
+        }, {x: x, y: y})
+            .start(window.requestAnimationFrame, duration, function (value, done) {
+                console.log('value', value);
+                window.scrollTo(value.x, value.y);
+            });
+    };
+
     var composite = tek.composite,
         copy = tek.copy,
         Slideshow = para.Slideshow,
@@ -201,7 +216,7 @@ para = (function (Kinetic, tek, para, window, document) {
                             break;
                     }
                     elm.className = [elm.className, 'pr-page'].join(' ');
-                    elm.id = elm.id || 'page-' + (i+1);
+                    elm.id = elm.id || 'page-' + (i + 1);
                     data.id = elm.id;
                     data.height = height;
                     data.width = width;
@@ -244,7 +259,7 @@ para = (function (Kinetic, tek, para, window, document) {
             }
             if (page) {
                 slideshow.changePage(page.id);
-                window.scrollTo(page.left, page.top);
+                window.scrollToAnimation(page.left, page.top);
             }
         });
 
