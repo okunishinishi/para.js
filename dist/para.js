@@ -42,10 +42,31 @@ para = (function (Kinetic, tek, para) {
 para = (function (Kinetic, tek, para) {
     var copy = tek.copy,
         Vector = tek.Vector;
+
+    Kinetic.Group.prototype.setWidthRecursive = function (w) {
+        var s = this,
+            children = s.children;
+        s.setWidth(w);
+        for (var i = 0, len = children.length; i < len; i++) {
+            children[i].setWidth(w);
+        }
+    };
+    Kinetic.Group.prototype.setHeight = function (h) {
+        var s = this,
+            children = s.children;
+        s.setHeight(h);
+        for (var i = 0, len = children.length; i < len; i++) {
+            children[i].setHeight(h);
+        }
+    };
+
     para.Page = tek.define({
         init: function (data) {
             var s = this;
             copy(data, s);
+            s.drawables = new Kinetic.Group;
+            s.drawables.setWidth(data.width);
+            s.drawables.setHeight(data.height);
         },
         attrAccessor: "prev,next".split(','),
         properties: {
@@ -54,13 +75,13 @@ para = (function (Kinetic, tek, para) {
             _prev: null,
             _next: null,
             move: function (vx, vy) {
-                var s = this;
-                var layers = s.layers;
-                for (var i = 0, len = layers.length; i < len; i++) {
-                    var drawables = layers[i].children;
-                    for (var j = 0; j < drawables.length; j++) {
-                        console.log(drawables[j]);
-                    }
+                var s = this,
+                    drawables = s.drawables.children;
+                for (var i = 0; i < drawables.length; i++) {
+                    var drawable = drawables[i];
+                    var z = drawable.z;
+                    drawable.setY(drawable.getY() - vy * z);
+                    drawable.setX(drawable.getX() - vx * z);
                 }
             },
             scrollTo: function (x, y) {
@@ -70,6 +91,16 @@ para = (function (Kinetic, tek, para) {
                 s.scrollLeft = x;
                 s.scrollTop = y;
                 s.move(vx, vy);
+            },
+            resize: function (w, h) {
+                var s = this,
+                    drawables = s.drawables.children;
+                for (var i = 0; i < drawables.length; i++) {
+                    var drawable = drawables[i],
+                        sizeFit = drawable.sizeFit;
+                    if (sizeFit.width) drawable.setWidthRecursive(w);
+                    if (sizeFit.height) drawable.setHeight(h);
+                }
             }
         }
     });
@@ -83,6 +114,10 @@ para = (function (Kinetic, tek, para) {
         init: function (data) {
             var s = this;
             s.stage = new Kinetic.Stage(data.stage);
+            var layer = new Kinetic.Layer;
+            s.stage.add(layer);
+
+
             var top = 0, left = 0;
             var prev = null;
             s.pages = data.pages.map(function (data) {
@@ -111,33 +146,16 @@ para = (function (Kinetic, tek, para) {
                 }
                 prev = page;
 
-                page.layers = {};
-                function getLayer(z) {
-                    var layer = page.layers.z;
-                    if (!layer) {
-                        layer = new Kinetic.Layer;
-                        s.stage.add(layer);
-                        page.layers[z] = layer;
-                    }
-                    return layer;
-                }
-
-                (data.items || []).forEach(function (data) {
-                    var z = data.z,
-                        loadImg = data.loadImg;
-                    var layer = getLayer(z);
-                    if (loadImg) {
-                        loadImg(function (data) {
-                            var image = new Kinetic.Image(data);
-                            layer.add(image);
-                            s.stage.draw();
-                        });
-                    }
+                var drawables = page.drawables;
+                (data.items || []).forEach(function (item) {
+                    drawables.add(item);
                 });
+                layer.add(drawables);
 
                 return  page;
             });
             s._currentPage = s.pages.length && s.pages[0];
+            s.stage.draw();
         },
         attrAccessor: 'direction,currentPage,onPageChange'.split(','),
         properties: {
@@ -158,12 +176,31 @@ para = (function (Kinetic, tek, para) {
                     var page = pages[i];
                     page.scrollTo(x - page.left, y - page.top);
                 }
+                s.stage.draw();
             },
             resize: function (w, h) {
                 var s = this,
-                    stage = s.stage;
+                    stage = s.stage,
+                    pages = s.pages;
                 stage.setWidth(w);
                 stage.setHeight(h);
+
+                for (var i = 0, len = pages.length; i < len; i++) {
+                    var page = pages[len - 1 - i],
+                        drawables = page.drawables,
+                        size = {w: drawables.getWidth(), h: drawables.getHeight()};
+                    switch (s._direction) {
+                        case DIRECTION.RIGHT:
+                        case DIRECTION.LEFT:
+                            size.h = h;
+                            break;
+                        case DIRECTION.UP:
+                        case DIRECTION.DOWN:
+                            size.w = w;
+                            break;
+                    }
+                    page.resize(size.w, size.h);
+                }
                 stage.draw();
             },
             pageAtPoint: function (x, y) {
@@ -171,7 +208,7 @@ para = (function (Kinetic, tek, para) {
                     pages = s.pages;
                 for (var i = 0, len = pages.length; i < len; i++) {
                     var page = pages[len - 1 - i];
-                    if (page.top > y) continue;
+                    if (y < page.top - 100) continue;
                     return page;
                 }
                 return null;
@@ -234,17 +271,6 @@ para = (function (Kinetic, tek, para, window, undefined) {
         return Array.prototype.splice.call(iteratable, 0)
     }
 
-
-    function createScopedStyle(elm) {
-        toArray(elm.getElementsByTagName('*')).concat(elm).forEach(function (elm) {
-            var rules = window.getMatchedCSSRules(elm);
-            if (!rules) return;
-            tek.unique(toArray(rules)).map(function (rule) {
-                console.log(rule.cssText);
-            });
-        });
-    }
-
     var composite = tek.composite,
         copy = tek.copy,
         Slideshow = para.Slideshow,
@@ -256,6 +282,40 @@ para = (function (Kinetic, tek, para, window, undefined) {
         stage.id = stage.id || 'pr-stage-' + (newStage.count++);
         parent.appendChild(stage);
         return stage;
+    }
+
+    function toNumber(string) {
+        return string && parseInt(
+            string.replace && string.replace(/[^\.\d]/g, '')
+        );
+    }
+
+    function domToKinetic(item) {
+        var style = window.getComputedStyle(item, null),
+            data = copy(item.dataset || {}, {
+                x: item.offsetLeft,
+                y: item.offsetTop,
+                width: item.offsetWidth,
+                padding: toNumber(style['padding-top']),
+                height: item.offsetHeight,
+                fontSize: toNumber(style['font-size']),
+                fontFamily: style['font-family'],
+                fontStyle: style['font-style'],
+                align: style['text-align']
+            });
+        var group = new Kinetic.Group({});
+        group.sizeFit = {
+            width: style['width'] === 'auto',
+            height: style['height'] === 'auto'
+        };
+        group.add(new Kinetic.Rect(copy(data, {
+            fill: style['background-color']
+        })));
+        group.add(new Kinetic.Text(copy(data, {
+            text: item.innerText,
+            fill: style['color']
+        })));
+        return group;
     }
 
     newStage.count = 0;
@@ -277,7 +337,8 @@ para = (function (Kinetic, tek, para, window, undefined) {
                     height: window.innerHeight
                 },
                 pages: pages.map(function (page, i) {
-                    var data = copy(page.dataset || {}, {}),
+                    var style = window.getComputedStyle(page),
+                        data = copy(page.dataset || {}, {}),
                         width = max(data.width || page.scrollWidth || 0, window.innerWidth),
                         height = max(data.height || page.scrollHeight || 0, window.innerHeight);
                     switch (direction) {
@@ -295,31 +356,14 @@ para = (function (Kinetic, tek, para, window, undefined) {
                     data.id = page.id;
                     data.height = height;
                     data.width = width;
+                    data['background-color'] = style['background-color'];
 
                     var items = toArray(page.children);
-                    data.items = items.map(function (item) {
-                        createScopedStyle(item);
-                        var data = copy(item.dataset || {}, {});
-                        var w = item.offsetWidth,
-                            h = item.offsetHeight,
-                            html = item.outerHTML;
-                        data.x = item.offsetLeft;
-                        data.y = item.offsetTop;
-                        data.width = w;
-                        data.height = h;
-                        data.loadImg = function (callback) {
-                            var img = new Image;
-                            img.onload = function () {
-                                delete data.loadImg;
-                                data.image = img;
-                                callback(data);
-                                URL.revokeObjectURL(img.src);
-                            };
-                            img.src = URL.createObjectURL(tek.toSVG(html, w, h));
-                        };
-
-                        data.z = parseInt(data.z || 0);
-                        return data;
+                    data.items = items.map(function (dom) {
+                        var data = copy(dom.dataset, {z: 1});
+                        var kinetic = domToKinetic(dom);
+                        kinetic.z = data.z && Number(data.z);
+                        return kinetic;
                     });
                     return data;
                 })
@@ -336,11 +380,13 @@ para = (function (Kinetic, tek, para, window, undefined) {
                     page.id = pageId;
                 });
 
-        window.onscroll = composite(window.onscroll, function () {
+        var onScroll = function () {
             var x = window.pageXOffset,
                 y = window.pageYOffset;
             slideshow.scrollTo(x, y);
-        });
+        };
+        onScroll();
+        window.onscroll = composite(window.onscroll, onScroll);
 
         window.onresize = composite(window.onresize, function () {
             slideshow.resize(window.innerWidth, window.innerHeight);
