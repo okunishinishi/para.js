@@ -1,0 +1,87 @@
+@charset "utf-8";
+/* product-recommend
+-------------------------------------------------------------------------------- */
+.dv_recommend {
+    margin: 10px;
+    border: solid 1px #999;
+    border-top: none;
+    width: 928px;
+    font-family: "ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3", Arial, Helvetica, sans-serif;
+}
+
+.dv_recommend .dv_rc_header {
+    display: none;
+    font-size: 15px;
+}
+
+.dv_recommend .dv_rc_title {
+    padding-top: 5px;
+    /*border: none;*/
+    /*border: 1px solid #FFFFFF;*/
+    width: 930px;
+    height: 22px;
+    background: url("/user_data/packages/default/img/products/recommend_title.gif") no-repeat #FFFFFF;
+    font-weight: bold;
+    margin-right: 0px;
+    margin-left: -1px;
+}
+
+.dv_recommend .dv_rc_items {
+    background: none repeat scroll 0 0 #F6F3E6;
+    width: 204px;
+    float: left;
+    display: block;
+    margin: 6px 4px 12px 8px;
+    padding: 7px;
+    *background:transparent url("/user_data/packages/default/img/common/clear.gif") no-repeat;
+    *z-index:1;
+}
+
+.dv_recommend .dv_rc_img {
+    height: 190px;
+    width: 190px;
+    background-color: #FFFFFF;
+    border: 1px solid #666666;
+    display:table-cell;
+    vertical-align: middle;
+    *cursor: pointer;
+    *background-color:transparent;
+    *z-index:3;
+}
+
+.dv_recommend .dv_rc_img img {
+    height: 190px;
+    width: 190px;
+    *width: expression(this.width >= this.height ? "190px" : "auto");
+    *height: expression(this.width <= this.height ? "190px" : "auto");
+    max-width: 190px;
+    max-height: 190px;
+    float: none;
+    *position:relative;
+    *z-index:2;
+}
+
+.dv_recommend .dv_rc_name {
+    padding: 5px;
+    font-size: 12px;
+    color: #07519A;
+    text-decoration: underline;
+    text-align: left;
+}
+
+.dv_recommend .dv_rc_description {
+    font-size: 11px;
+    color: #333333;
+}
+
+.dv_recommend .dv_rc_price {
+    padding: 5px;
+    color: #CC0000;
+    font-size: 140%;
+    font-weight: bold;
+    text-align: right;
+}
+
+.dv_recommend .dv_rc_footer {
+    clear: both;
+}

@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+/* 新しいヘッダーレイアウト用CSS add 20120822
+ ---------------------------------------------------------------------------- */
+#gnaviNewHeader {}
+
+#gnaviNewHeader .logoArea {
+	padding-top: 8px;
+	width: 249px;
+	float: left;
+}
+
+#gnaviNewHeader .logoArea a {
+	text-decoration: none;
+	color: black;
+	display: block;
+}
+
+#gnaviNewHeader .logoArea a .caption {
+	font-size: 9px;
+	display: block;
+}
+
+#gnaviNewHeader .logoArea a .caption strong {
+	font-weight: normal;
+}
+
+#gnaviNewHeader .bannerArea {
+	float: left;
+	width: 690px;
+	margin-left: 10px;
+}
+
+* html #gnaviNewHeader .bannerArea {
+	margin-left: 5px;
+}
+
+#gnaviNewHeader .tv_rendo_yudo {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+#gnaviNewHeader .tv_rendo_yudo .title {
+	width: 149px;
+}
+
+* html #gnaviNewHeader .tv_rendo_yudo .title {
+	width: 175px;
+}
+
+div#gnaviArea {
+	margin-bottom: 13px;
+	text-align: center;
+}
+
+div#gnaviArea .gnaviAreaInner {
+	margin: 0 auto;
+	width: 950px;
+}
+
+#gnaviHeaderWrap #headerTop {
+	padding-top: 0;
+}

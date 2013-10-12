@@ -8,10 +8,6 @@
             opacity: 0.9;
         }
 
-        .pr-page {
-            position: relative;
-        }
-
         .scroll-label {
             position: absolute;
             right: 10px;
@@ -37,25 +33,22 @@
             padding: 40px 80px;
         }
 
-        .kineticjs-content {
-        }
-
         section {
             background: #FEFEFE;
         }
 
         section:nth-child(even) {
-            background: #FAFAFA;;
+            background: #FAFAFA;
         }
     </style>
     <script src="../../lib/kinetic.js"></script>
     <script src="../../lib/one-color.js"></script>
     <script src="../../lib/tek.js"></script>
-    <script src="../../lib/para.js/01.base.js"></script>
-    <script src="../../lib/para.js/02.direction.js"></script>
-    <script src="../../lib/para.js/09.page.js"></script>
-    <script src="../../lib/para.js/10.slideshow.js"></script>
-    <script src="../../lib/para.js/99.call.js"></script>
+    <script src="../../lib/para.dependent.js/01.base.js"></script>
+    <script src="../../lib/para.dependent.js/02.direction.js"></script>
+    <script src="../../lib/para.dependent.js/09.page.js"></script>
+    <script src="../../lib/para.dependent.js/10.slideshow.js"></script>
+    <script src="../../lib/para.dependent.js/99.call.js"></script>
     <script type="text/javascript">
         var composite = tek.composite;
         window.onload = composite(window.onload, function () {
@@ -121,7 +114,7 @@
     <!--<span class="scroll-label"></span>-->
 
     <!--<h1>page04</h1>-->
-    <!--</section>-->
+</section>
 
 </body>
 </html>

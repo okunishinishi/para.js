@@ -9,7 +9,7 @@ para = (function(){
         document.head.appendChild(style);
     }
     window.onload = function(){
-        addStyle( "	html {  margin: 0;  padding: 0;}body {  background: #FAFAFA;  color: #555;  text-align: center;  margin: 0;  padding: 0;  top: 0;  left: 0;}.pr-stage {  position: fixed;  left: 0;  top: 0;  width: 100%;  height: 100%;  z-index: 100;  opacity: 1;  background-color: #FAFAFA;}.pr-page {  -moz-box-sizing: border-box;  -webkit-box-sizing: border-box;  -o-box-sizing: border-box;  -ms-box-sizing: border-box;  box-sizing: border-box;  overflow: hidden;  width: 100%;  min-height: 300px;}" );
+        addStyle( "	html {  margin: 0;  padding: 0;}body {  background: #FAFAFA;  color: #555;  text-align: center;  margin: 0;  padding: 0;  top: 0;  left: 0;  position: relative;}.pr-stage {  position: fixed;  left: 0;  top: 0;  width: 100%;  height: 100%;  z-index: 100;  opacity: 1;  background-color: #FAFAFA;}.pr-page {  -moz-box-sizing: border-box;  -webkit-box-sizing: border-box;  -o-box-sizing: border-box;  -ms-box-sizing: border-box;  box-sizing: border-box;  overflow: hidden;  width: 100%;  min-height: 300px;  position: relative;}.pr-layer {  width: 100%;  height: 100%;  left: 0;  top: 0;  position: absolute;  z-index: 0;}" );
     };
 
 
@@ -13584,34 +13584,15 @@ para = (function(){
 		    var copy = tek.copy,
 		        Vector = tek.Vector;
 		
-		    var i=0;
-		    function newBackground(data) {
-		        var
-		            x = data.x,
-		            y= data.y,
-		            w = data.width,
-		            h = data.height;
+		    var i = 0;
 		
-		        var background = new Kinetic.Group({
-		//            x:x,
-		//            h:h,
-		//            width: w,
-		//            height: h
-		        });
-		        var rect = new Kinetic.Rect({
-		            x:0,
-		            y:0,
-		            width: w,
-		            height: h,
-		            fill:['#FFA',"#FAA","#AAA"][i++%3]
-		//            fill: data['background-color'] || "#FFF"
-		        });
-		        console.log(['#FFA',"#FAA","#AAA"][i%3],data['background-color']);
-		        rect.z=1;
-		//        return rect;
+		    function newBackground(data) {
+		        var background = new Kinetic.Group;
+		        var rect = new Kinetic.Rect(copy(data, {
+		            fill: data['background-color'] || "#FFF"
+		        }));
 		        background.add(rect);
-		        background.z=1;
-		//
+		        background.z = 1;
 		        return background;
 		    }
 		
@@ -13667,6 +13648,7 @@ para = (function(){
 		})(Kinetic, tek, para);
 		para = (function (Kinetic, tek, para) {
 		    var Page = para.Page,
+		        copy = tek.copy,
 		        Vector = tek.Vector,
 		        DIRECTION = para.DIRECTION;
 		    para.Slideshow = tek.define({
@@ -13675,7 +13657,6 @@ para = (function(){
 		            s.stage = new Kinetic.Stage(data.stage);
 		            var layer = new Kinetic.Layer;
 		            s.stage.add(layer);
-		
 		
 		            var top = 0, left = 0;
 		            var prev = null;
@@ -13762,6 +13743,10 @@ para = (function(){
 		                }
 		                stage.draw();
 		            },
+		            redraw: function () {
+		                var s = this;
+		                s.stage.draw();
+		            },
 		            pageAtPoint: function (x, y) {
 		                var s = this,
 		                    pages = s.pages;
@@ -13809,6 +13794,18 @@ para = (function(){
 		    var Animation = tek.Animation,
 		        URL = window['URL'],
 		        document = window['document'];
+		
+		    window.newImage = function (src, onload) {
+		        var image = new Image();
+		        image.onload = function () {
+		            onload && onload(image);
+		            window.onImageLoad && window.onImageLoad();
+		        };
+		        image.src = src;
+		    };
+		    window.onImageLoad = function () {
+		        console.log('new image loaded');
+		    };
 		
 		
 		    window.scrollToAnimation = function (x, y, duration) {
@@ -13863,10 +13860,6 @@ para = (function(){
 		                align: style['text-align']
 		            });
 		        var group = new Kinetic.Group({});
-		//        group.sizeFit = {
-		//            width: style['width'] === 'auto',
-		//            height: style['height'] === 'auto'
-		//        };
 		        group.add(new Kinetic.Rect(copy(data, {
 		            fill: style['background-color']
 		        })));
@@ -13874,6 +13867,17 @@ para = (function(){
 		            text: item.innerText,
 		            fill: style['color']
 		        })));
+		
+		        var src = item.src;
+		        if (src) {
+		            var imgContainer = new Kinetic.Group({});
+		            group.add(imgContainer);
+		            window.newImage(src, function (image) {
+		                imgContainer.add(new Kinetic.Image(copy(data, {
+		                    image: image
+		                })));
+		            });
+		        }
 		        return group;
 		    }
 		
@@ -13950,6 +13954,10 @@ para = (function(){
 		        window.onresize = composite(window.onresize, function () {
 		            slideshow.resize(window.innerWidth, window.innerHeight);
 		        });
+		
+		        window.onImageLoad = function () {
+		            slideshow.redraw();
+		        };
 		
 		        document.addEventListener('keydown', function (e) {
 		            var direction = DIRECTION.fromValue(e.keyIdentifier);
