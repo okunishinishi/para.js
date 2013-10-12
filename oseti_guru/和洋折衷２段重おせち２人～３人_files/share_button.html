@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0156)http://plugins.mixi.jp/share_button.pl?u=http%3A%2F%2Fshop.gnavi.co.jp%2Fono-group%2Fosechi_2014_01%2F&k=8312d70d8a3771bc4cd27422c2f93bcc60d5ffa8&b=button-1 -->
+<html xmlns="http://www.w3.org/1999/xhtml" class="osWindows browserMSIE browserMSIE9 servicePluginLike pageShareJpMixiPlugins domainJpMixiPlugins"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>ソーシャル・ネットワーキング サービス [mixi(ミクシィ)]</title>
+
+<!-- header meta values -->
+
+<meta name="application-name" content="mixi">
+<meta name="msapplication-navbutton-color" content="#E0C074">
+<meta name="msapplication-window" content="width=100%;height=100%">
+<meta name="robots" content="nofollow,noindex">
+<meta name="robots" content="noodp">
+<meta name="Slurp" content="NOYDIR">
+<!-- / header meta values -->
+
+</head>
+<body class="pluginBody" style="overflow:hidden">
+<style type="text/css">
+<!--
+/* Fix iframe vertical scallbar problem on Safari/Chrome (Webkit) */
+html {
+  overflow: hidden;
+}
+div,h1,h2,h3,h4,h5,h6,p,ul,ol,li,dl,dt,dd,form,input,img{
+margin:0;
+padding:0;
+}
+body {
+  margin: 0;
+  color: #666666;
+  font-size: small;
+  text-align: left;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+}
+img {
+  border: 0px;
+}
+body.pluginBody {
+  text-align:left;
+}
+p.count,
+p.count strong{
+  display: block;
+  background-image: url(/img/basic/mixicheck_entry/favorite_button004.png);
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: auto;
+}
+p.count {
+  position: absolute;
+  top: 0px;
+  left: 58px;
+  height: 20px;
+  padding: 0 0 0 12px;
+  background-position: 3px 100%;
+}
+p.count strong {
+  _position: relative;
+  float: left;
+  height: 20px;
+  line-height: 20px;
+  max-width: 53px;
+  margin-right: -1px;
+  padding: 0 4px 0 0;
+  letter-spacing: 0.03em;
+  background-position: 100% 100%;
+}
+-->
+</style>
+
+<a class="mixi-check-button" href="javascript:void(0);"><img src="bt_check_1.png"></a>
+
+
+<script type="text/javascript">
+<!--
+
+window.onunload = function() {
+   setTimeout(function() {
+       document.body.style.display = "none";
+       location.reload();
+   }, 100);
+};
+
+window.onload = function(){
+    var elements = document.getElementsByTagName("a");
+    var element  = elements[0];
+
+    observeEvent(element, "click", makeSharer('http://mixi.jp/share.pl?u=http%3A%2F%2Fshop.gnavi.co.jp%2Fono-group%2Fosechi_2014_01%2F&k=8312d70d8a3771bc4cd27422c2f93bcc60d5ffa8'));
+};
+
+function makeSharer(href) {
+    return function (event) {
+        window.open(href, "share", [
+                "width=632",
+                "height=456,",
+                "location=yes",
+                "resizable=yes",
+                "toolbar=no",
+                "menubar=no",
+                "scrollbars=no",
+                "status=no"
+            ].join(","));
+        stopEvent(event || window.event);
+   };
+}
+
+function observeEvent(element, name, observer) {
+    if (element.addEventListener) {
+        element.addEventListener(name, observer, false);
+    } else if (element.attachEvent) {
+        element.attachEvent("on" + name, observer);
+    } else {
+        element["on" + name] = observer;
+    }
+}
+
+function stopEvent(event) {
+    if (event.preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+    } else {
+        event.returnValue = false;
+        event.cancelBubble = true;
+    }
+}
+
+// -->
+</script>
+
+
+</body></html>

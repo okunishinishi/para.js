@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0109)http://share.gree.jp/share?url=http%3A%2F%2Fshop.gnavi.co.jp%2Fono-group%2Fosechi_2014_01%2F&type=0&height=20 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+    <title>GREE</title>
+    
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Language" content="ja">
+    <meta http-equiv="Cache-Control" content="private">
+    <meta name="robots" content="noydir">
+    <meta name="robots" content="noodp">
+    <script src="jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+     function getButtonInfos() {
+         return new Array(
+       		 _createButtonInfo('iine', 'ÅÑÅÑÅ≠ÔÅ', new Array(16, 20, 23), 20),
+       		 _createButtonInfo('kininaru', 'Ê∞óÅ&#65533;Å&#65533;Çã', new Array(16, 20, 23), 20),
+   			 _createButtonInfo('osusume', 'Ç&#65533;Çπ„Çπ„É', new Array(16, 20, 23), 20),
+   			 _createButtonInfo('share', 'Ç∑„Çß„Ç', new Array(16, 20, 23), 20),
+   			 _createButtonInfo('logo', 'É≠„Ç¥„Å&#65533;Å', new Array(16, 22, 32), 22));
+     }
+     function _createButtonInfo(type, name, height, default_height) {
+         var button_info = new Array(4);
+         button_info['type'] = type;
+         button_info['name'] = name;
+         button_info['height'] = height;
+         button_info['default_height'] = default_height;
+	     return button_info;
+     }
+     var args = null;
+     function createUrlParam() {
+         args = new Object;
+            var pair=location.search.substring(1).split('&');
+            for(i=0;pair[i];i++) {
+	            var kv = pair[i].split('=');
+	            args[kv[0]]=kv[1];
+            }
+     }
+     function getButtonHeight(button_info, param_height) {
+         var len = button_info['height'].length;
+         for (var i = 0; i < len; i++) {
+             if (button_info['height'][i] == param_height) {
+                 return param_height;
+             }
+         }
+         return button_info['default_height'];
+     }
+     function getButtonUrl(button_type, button_height) {   
+         var button_infos = getButtonInfos();
+         var type =button_type != null ? button_type : 0;
+         var button_info = button_infos[type];
+         var button_url = "http://i.gree.jp/img/share/button/btn_"+ button_info['type'] +"_" + getButtonHeight(button_info, button_height) +".png" ;
+       return button_url;
+     }
+     function openShareWindow(url, width, height) {
+         var features = "location=no, menubar=no, toolbar=no, status=yes";
+         if (width) {
+             if (screen.width > width) {
+                 features += ", left=" + (screen.width - width) / 2;
+             }
+             else {
+                 width = screen.width;
+             }
+             features += ", width=" + width;
+         }
+         if (height) {
+             if (screen.height > height) {
+                 features += ", top=" + (screen.height - height) / 2;
+             }
+             else {
+                 height = screen.height;
+             }
+             features += ", height=" + height;
+         }
+         window.open(url, 'greeShareWindow' ,features);
+     }
+     function _isset(data){
+    	    return (typeof(data) != 'undefined');
+    	}
+     function bind() {
+         createUrlParam();
+         var url = _isset(args['url']) ? args['url'] : null;
+         var type = _isset(args['type']) ? args['type'] : null;
+         var height = _isset(args['height']) ? args['height'] : null;
+         document.getElementById('url').value = url;
+         document.getElementById('button_type').value = type;
+         document.getElementById('button_height').value = height;
+         document.getElementById('like_button').src =getButtonUrl(type, height);
+     }
+     </script>
+</head>
+<body onload="bind();" marginwidth="0" marginheight="0">
+<form id="get_comment_url">
+<input type="hidden" id="url" name="url" value="http%3A%2F%2Fshop.gnavi.co.jp%2Fono-group%2Fosechi_2014_01%2F">
+<input type="hidden" id="button_type" name="button_type" value="0">
+<input type="hidden" id="button_height" name="button_height" value="20">
+</form>
+    <a id="like_submit" style="cursor:pointer">
+    <img id="like_button" src="btn_iine_20.png" style="border-style:none;"></a>
+     <script type="text/javascript" charset="utf-8">
+    (function($) {
+        $.extend({
+            conv_params : function(a) {
+                var result = {};
+                for ( var i = 0, l = a.length; i < l; i++) {
+                    result[a[i].name] = a[i].value;
+                }
+                return result;
+            }
+
+        });
+        $(function() {
+            $('#like_submit').bind(
+                'click',
+                function() {
+                	var url = $('#url').attr('value');
+                	if (null == url || '' == url) {
+                		return false;
+                	} 
+                    var params = $('#get_comment_url').serializeArray();
+                    params = $.conv_params(params);
+                    params["action"] = 'get_comment_url';
+                    $.ajax({
+                        async : false,
+                        type : 'GET',
+                        url : '/',
+                        data : params,
+                        success : function(data, status, xhr) {
+                            if (typeof (data) == "object") {
+                                openShareWindow(data.url, data.width, data.height);
+                            }
+                        }
+                    });
+                });
+        });
+    })(jQuery);
+    </script>
+
+
+
+</body></html>
