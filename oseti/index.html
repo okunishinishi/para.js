@@ -14,6 +14,15 @@
     <script src="../../lib/para.dependent.js/99.call.js"></script>
 
     <style>
+        html {
+            background-color: #030303;
+        }
+
+        body {
+            font-family: monospace;
+            background-color: #AAA;
+        }
+
         .pr-stage {
         }
 
@@ -34,6 +43,7 @@
             margin: 10px 0;
             line-height: 1em;
             padding: 10px 0 0;
+            display: inline-block;
         }
 
         section {
@@ -41,13 +51,31 @@
             position: relative;
         }
 
+        .abs {
+            position: absolute;
+        }
+
+        #body-cover {
+            background-color: #111;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100000;
+        }
     </style>
+    <script>
+    </script>
 </head>
-<body id="para">.
+<body id="para">
+<!--<div id="body-cover"></div>-->
 <section id="page0">
     <style scoped="scoped" type="text/css">
         #page0 {
             color: #AAA;
+            font-family: fantasy;
+            height: 600px;
         }
 
         #page0 .page-background {
@@ -56,76 +84,116 @@
 
         #page0 h1 {
             font-weight: bold;
-            background-color: rgba(0, 0, 0, 0.7);
             text-shadow: 5px 5px 10px rgba(0, 0, 0, 1);
             color: #FFF;
             padding: 10px 40px 8px;
         }
 
-        #page0 #belt1 {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-        }
-
-        #page0 #belt2 {
-            background-color: rgba(188, 186, 0, 0.91);
-            color: #451903;
+        #page0 .belt {
+            background-color: rgba(245, 245, 245, 0.20);
+            color: #988503;
+            font-size: 10em;
+            height: 20px;
         }
     </style>
-    <div class="page-background pr-layer" data-z="1"></div>
+
 
     <img data-z="0.2" src="img/和菜おせち.png" height="1337" alt=""/>
 
-    <h1 id="belt0" data-z="1" data-y="500" class="text-right">こだわりの素材</h1>
+    <img class="abs" src="img/coollogo_com-102225168.png"
+         data-z="0.3" data-y="120" data-x="0" alt=""/>
+    <img class="abs" src="img/coollogo_com-17155334.png"
+         data-z="0.7" data-y="480" data-x="400" alt=""/>
 
-    <h1 id="belt1" data-z="1.5" data-y="1000" class="text-left">職人の技</h1>
 
-    <img src="img/menu.png" alt="" data-y="1200" data-z="1"/>
+    <img src="img/menu.png" alt="" data-y="1400" data-z="1.5"/>
 
-    <h1 id="belt2" data-z="2" data-y="1600">本物の味</h1>
 
 </section>
-<section id="page1">
+<section id="page1" data-draw-index="1">
     <style scoped="scoped" type="text/css">
+        #page1 {
+            height: 1400px;
+        }
+
         #page1 .page-background {
-            background-color: #000;
+            background-color: rgba(247, 232, 0, 0.99);
         }
 
         #page1 h1 {
             font-weight: bold;
-            background-color: #000;
-            text-shadow: 5px 5px 10px rgba(0, 0, 0, 1);
-            color: #EE3;
+            color: #100f00;
             padding: 10px 40px 8px;
-            font-size: 10em
+            font-size: 12em
         }
     </style>
     <div class="page-background pr-layer" data-z="1"></div>
 
-    <h1 data-z="0.5" data-y="280">2014年おせち</h1>
+    <h1 data-z="0.5" data-y="340">2014年おせち</h1>
 
-    <h1 data-z="0.5" data-y="480">予約販売開始</h1>
+    <h1 data-z="0.5" data-y="540">予約販売開始</h1>
 
     <!--<h1 data-z="1.2" data-y="400" style="color:#EEE">23,800円</h1>-->
 </section>
 <section id="page2">
     <style scoped="scoped" type="text/css">
         #page2 .page-background {
-            background-color: #EEE;
+            background-color: #FFF;
+            height: 1500px;
         }
     </style>
     <div class="page-background pr-layer" data-z="1"></div>
-    <h1>page03</h1>
+    <img src="img/ugenta.jpg" data-x="-100" data-y="400" data-z="0.4"/>
+
+    <img class="abs" data-z="1.8" data-x="500" data-y="200" src="img/menu2.png" alt=""/>
+
+    <img class="abs" src="img/n.png" data-x="600" data-z="3" data-y="1500"/>
+
+    <!--<img class="abs" data-x="500" data-y="100" src="img/Screen%20Shot%202013-10-14%20at%205.35.11%20PM.png"/>-->
+    <!--<img class="abs" data-x="500" data-y="300" src="img/Screen%20Shot%202013-10-14%20at%205.35.18%20PM.png"/>-->
+    <!--<img class="abs" data-x="500" data-y="500" src="img/Screen%20Shot%202013-10-14%20at%205.35.24%20PM.png"/>-->
+    <!--<img class="abs" data-x="500" data-y="700" src="img/Screen%20Shot%202013-10-14%20at%205.35.30%20PM.png"/>-->
 </section>
 
 <section id="page3">
     <style scoped="scoped" type="text/css">
         #page3 .page-background {
-            background-color: #33A;
+            background-color: #000;
         }
     </style>
     <div class="page-background pr-layer" data-z="1"></div>
-    <h1>page04</h1>
+
+    <img class="abs" data-x="100" data-y="100" data-z="1" src="img/mini/01.png"/>
+    <img class="abs" data-x="200" data-y="100" data-z="1" src="img/mini/02.png"/>
+    <img class="abs" data-x="300" data-y="100" data-z="1" src="img/mini/03.png"/>
+    <img class="abs" data-x="400" data-y="100" data-z="1" src="img/mini/04.png"/>
+    <img class="abs" data-x="500" data-y="100" data-z="1" src="img/mini/05.png"/>
+    <img class="abs" data-x="600" data-y="100" data-z="1" src="img/mini/06.png"/>
+
+
+    <img class="abs" data-x="100" data-y="300" data-z="2" src="img/mini/07.png"/>
+    <img class="abs" data-x="200" data-y="300" data-z="2" src="img/mini/08.png"/>
+    <img class="abs" data-x="300" data-y="300" data-z="2" src="img/mini/09.png"/>
+    <img class="abs" data-x="400" data-y="300" data-z="2" src="img/mini/010.png"/>
+    <img class="abs" data-x="500" data-y="300" data-z="2" src="img/mini/011.png"/>
+    <img class="abs" data-x="600" data-y="300" data-z="2" src="img/mini/012.png"/>
+
+
+    <img class="abs" data-x="100" data-y="500" data-z="3" src="img/mini/013.png"/>
+    <img class="abs" data-x="200" data-y="500" data-z="3" src="img/mini/014.png"/>
+    <img class="abs" data-x="300" data-y="500" data-z="3" src="img/mini/015.png"/>
+    <img class="abs" data-x="400" data-y="500" data-z="3" src="img/mini/016.png"/>
+    <img class="abs" data-x="500" data-y="500" data-z="3" src="img/mini/017.png"/>
+    <img class="abs" data-x="600" data-y="500" data-z="3" src="img/mini/018.png"/>
+    <img class="abs" data-x="100" data-y="500" data-z="3" src="img/mini/019.png"/>
+
+    <img class="abs" data-x="100" data-y="700" data-z="4" src="img/mini/020.png"/>
+    <img class="abs" data-x="200" data-y="700" data-z="4" src="img/mini/021.png"/>
+    <img class="abs" data-x="300" data-y="700" data-z="4" src="img/mini/022.png"/>
+    <img class="abs" data-x="400" data-y="700" data-z="4" src="img/mini/023.png"/>
+    <img class="abs" data-x="500" data-y="700" data-z="4" src="img/mini/024.png"/>
+    <img class="abs" data-x="600" data-y="700" data-z="4" src="img/mini/025.png"/>
+    <img class="abs" data-x="100" data-y="700" data-z="4" src="img/mini/01.png"/>
 </section>
 
 </body>
