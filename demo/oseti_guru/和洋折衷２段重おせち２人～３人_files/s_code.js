@@ -1,1 +1,0 @@
-document.write('<script src="//x.gnst.jp/s' + (location.href.match(/https?:\/\/te?st/) ? 't' : 'n') + '.js"></script>');
