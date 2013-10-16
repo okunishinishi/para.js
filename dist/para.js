@@ -13889,7 +13889,7 @@ para = (function(){
 		                align: getStyleValue(style, 'text-align')
 		            });
 		        var group = new Kinetic.Group({});
-		        if (data.render === "false") return group;
+		        if (data.render == "false") return group;
 		        var back = new Kinetic.Rect(copy(data, {
 		            fill: getStyleValue(style, 'background-color')
 		        }));
