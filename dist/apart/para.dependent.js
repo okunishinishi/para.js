@@ -145,14 +145,23 @@ para = (function (Kinetic, tek, para) {
                 }
                 prev = page;
 
-                var drawables = page.drawables;
                 (data.items || []).forEach(function (item) {
-                    drawables.add(item);
+                    page.drawables.add(item);
                 });
-                layer.add(drawables);
 
+                page.drawIndex = data.drawIndex;
                 return  page;
             });
+            s.pages
+                .sort(function (a, b) {
+                    return a.drawIndex - b.drawIndex;
+                })
+                .map(function (page) {
+                    return page.drawables;
+                })
+                .forEach(function (drawables) {
+                    layer.add(drawables);
+                });
             s._currentPage = s.pages.length && s.pages[0];
             s.stage.draw();
         },
@@ -283,7 +292,12 @@ para = (function (Kinetic, tek, para, window, undefined) {
     };
 
     function toArray(iteratable) {
-        return Array.prototype.splice.call(iteratable, 0)
+        var a = [];
+        if (!iteratable) return a;
+        for (var i = 0, len = iteratable.length; i < len; i++) {
+            a.push(iteratable[i]);
+        }
+        return a;
     }
 
     var composite = tek.composite,
@@ -305,26 +319,43 @@ para = (function (Kinetic, tek, para, window, undefined) {
         );
     }
 
+    function toCamel(str) {
+        return str && str.replace(/(\-[a-z])/g, function ($1) {
+            return $1.toUpperCase().replace('-', '');
+        });
+    }
+
+    function getStyle(element) {
+        var getComputedStyle = window.getComputedStyle || document.defaultView.getComputedStyle;
+        return getComputedStyle && getComputedStyle(element, null) || element.currentStyle
+    }
+
+    function getStyleValue(style, key) {
+        return style[key] || style[toCamel(key)];
+    }
+
     function domToKinetic(item) {
-        var style = window.getComputedStyle(item, null),
+        var style = getStyle(item),
             data = copy(item.dataset || {}, {
                 x: item.offsetLeft,
                 y: item.offsetTop,
                 width: item.offsetWidth,
-                padding: toNumber(style['padding-top']),
                 height: item.offsetHeight,
-                fontSize: toNumber(style['font-size']),
-                fontFamily: style['font-family'],
-                fontStyle: style['font-style'],
-                align: style['text-align']
+                padding: toNumber(getStyleValue(style, 'padding-top')),
+                fontSize: toNumber(getStyleValue(style, 'font-size')),
+                fontFamily: getStyleValue(style, 'font-family'),
+                fontStyle: getStyleValue(style, 'font-style'),
+                align: getStyleValue(style, 'text-align')
             });
         var group = new Kinetic.Group({});
-        group.add(new Kinetic.Rect(copy(data, {
-            fill: style['background-color']
-        })));
+        if (data.render === "false") return group;
+        var back = new Kinetic.Rect(copy(data, {
+            fill: getStyleValue(style, 'background-color')
+        }));
+        group.add(back);
         group.add(new Kinetic.Text(copy(data, {
-            text: item.innerText,
-            fill: style['color']
+            text: item.innerText || item.textContent || '',
+            fill: getStyleValue(style, 'color')
         })));
 
         var src = item.src;
@@ -336,6 +367,18 @@ para = (function (Kinetic, tek, para, window, undefined) {
                     image: image
                 })));
             });
+        }
+
+        var rotate = data.rotate;
+        if (rotate) {
+            var x = Number(back.getX()),
+                y = Number(back.getY()),
+                w = back.getWidth(),
+                h = back.getHeight();
+            back.setOffset([w / 2, h / 2]);
+            back.setX(x + w / 2);
+            back.setY(y + h / 2);
+            back.rotate(rotate);
         }
         return group;
     }
@@ -378,6 +421,7 @@ para = (function (Kinetic, tek, para, window, undefined) {
                     data.id = page.id;
                     data.height = height;
                     data.width = width;
+                    data.drawIndex = data.drawIndex || i;
                     data['background-color'] = style['background-color'];
 
                     var items = toArray(page.children);
@@ -435,6 +479,7 @@ para = (function (Kinetic, tek, para, window, undefined) {
                 window.scrollToAnimation(page.left, page.top);
             }
         });
+
 
         para.slideshows.push(slideshow);
     });
