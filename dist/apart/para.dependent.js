@@ -149,12 +149,12 @@ para = (function (Kinetic, tek, para) {
                     page.drawables.add(item);
                 });
 
-                page.drawIndex = data.drawIndex;
+                page.drawindex = data.drawindex;
                 return  page;
             });
             s.pages
                 .sort(function (a, b) {
-                    return a.drawIndex - b.drawIndex;
+                    return a.drawindex - b.drawindex;
                 })
                 .map(function (page) {
                     return page.drawables;
@@ -339,7 +339,7 @@ para = (function (Kinetic, tek, para, window, undefined) {
             data = copy(item.dataset || {}, {
                 x: item.offsetLeft,
                 y: item.offsetTop,
-                width: item.offsetWidth,
+                width: item.offsetWidth + 4, //フォントによっては文字が見切れるので、若干余分に幅を持たせる
                 height: item.offsetHeight,
                 padding: toNumber(getStyleValue(style, 'padding-top')),
                 fontSize: toNumber(getStyleValue(style, 'font-size')),
@@ -421,7 +421,7 @@ para = (function (Kinetic, tek, para, window, undefined) {
                     data.id = page.id;
                     data.height = height;
                     data.width = width;
-                    data.drawIndex = data.drawIndex || i;
+                    data.drawindex = data.drawindex || i;
                     data['background-color'] = style['background-color'];
 
                     var items = toArray(page.children);

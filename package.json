@@ -4,6 +4,7 @@
     "author": {
         "name": "Taka Okunishi"
     },
+    "main": "./lib/index",
     "devDependencies": {
         "should": "*",
         "nodeunit": "*"
@@ -11,7 +12,8 @@
     "dependencies": {
         "tek": "*",
         "tek-html": "*",
-        "uglify-js":"*",
+        "unzip":"*",
+        "uglify-js": "*",
         "commander": "*"
     }
 }

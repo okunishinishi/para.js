@@ -13895,7 +13895,7 @@ var Kinetic = {};
             data = copy(item.dataset || {}, {
                 x: item.offsetLeft,
                 y: item.offsetTop,
-                width: item.offsetWidth,
+                width: item.offsetWidth + 4, //フォントによっては文字が見切れるので、若干余分に幅を持たせる
                 height: item.offsetHeight,
                 padding: toNumber(getStyleValue(style, 'padding-top')),
                 fontSize: toNumber(getStyleValue(style, 'font-size')),
