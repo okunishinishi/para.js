@@ -12,3 +12,15 @@ exports.parseTest = function (test) {
         test.done();
     });
 };
+
+exports.parseSlideshowTest = function (test) {
+    var dirpath = resolve(mockDir, 't.pptx.raw', 'docProps');
+    new PowerpointParser();
+    new PowerpointParser().parseSlideshow(dirpath, function (data) {
+        data.slides.should.equal(3);
+        data.title.should.equal('たいとる');
+        data.created.should.equal('2013-10-23T00:45:35Z');
+        data.modified.should.equal('2013-10-23T00:47:22Z');
+        test.done();
+    });
+};

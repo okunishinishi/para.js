@@ -13,6 +13,8 @@
         "tek": "*",
         "tek-html": "*",
         "unzip":"*",
+        "xpath":"*",
+        "xmldom": "*",
         "uglify-js": "*",
         "commander": "*"
     }
