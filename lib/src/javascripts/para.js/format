@@ -1,0 +1,14 @@
+/**
+ * para.js
+ * - parallax slideshow -
+ * @version v{{version}}
+ * @author {{author}}
+ * @license MIT
+ * @date {{date}}
+ *
+ /
+(function ({{name}}) {
+
+ {{modules}}
+
+ })(typeof(module) === 'undefined' ? this['{{name}}'] = {} : module.exports);

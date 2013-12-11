@@ -1,13 +1,14 @@
 {
-    "name": "para.js",
-    "version": "0.0.1",
+    "name": "para.01.base.js",
+    "version": "2.0.1",
     "author": {
         "name": "Taka Okunishi"
     },
     "main": "./lib/index",
     "devDependencies": {
         "should": "*",
-        "nodeunit": "*"
+        "nodeunit": "*",
+        "dateformat": "*"
     },
     "dependencies": {
         "tek": "*",
