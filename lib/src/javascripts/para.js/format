@@ -1,14 +1,38 @@
 /**
- * para.js
+ * {{name}}.js
  * - parallax slideshow -
  * @version v{{version}}
  * @author {{author}}
  * @license MIT
  * @date {{date}}
  *
- /
-(function ({{name}}) {
+ */
+
+(function (window, {{name}}) {
+
+    var tek = window.tek,
+        one = window.one,
+        Kinetic = window.Kinetic;
+    var valid = (function(dependencies){
+        for(var name in dependencies){
+            if (!dependencies.hasOwnProperty(name)) continue;
+            if (!dependencies[name]) {
+                console.error('[{{name}}.js] dependency missing:', name, 'not found.');
+                return false;
+            }
+        }
+        return true;
+    })({
+        'tek.js':tek,
+        'kinetic.js':Kinetic,
+        'one-color.js':one
+    });
+    if (!valid) return;
+
+    tek.crossBrowser(window);
 
  {{modules}}
 
- })(typeof(module) === 'undefined' ? this['{{name}}'] = {} : module.exports);
+   para.call();
+
+ })(window, window['{{name}}']={});

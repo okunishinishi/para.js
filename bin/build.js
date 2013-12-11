@@ -36,7 +36,7 @@ tekHTML.publishAll([
 
 tekHTML.publishAll([
     'tek-mixin.less'
-], resolve(jsDistDir, 'css'), function () {
+], resolve(cssDistDir, 'lib'), function () {
 });
 
 
