@@ -4,6 +4,9 @@
     "author": {
         "name": "Taka Okunishi"
     },
+    "scripts":{
+        "test":"nodeunit test/unit-tests/**/*_test.js"
+    },
     "main": "./lib/index",
     "devDependencies": {
         "should": "*",
